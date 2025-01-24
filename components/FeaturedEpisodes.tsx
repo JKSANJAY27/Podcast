@@ -2,10 +2,10 @@
 
 import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { Episode } from "@/types/episode";
+import { MagicCard } from "@/components/magicui/magic-card";
 
 export default function FeaturedEpisodes() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function FeaturedEpisodes() {
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
-        const response = await fetch('/api/episodes'); // Fetch from your API route
+        const response = await fetch('/api/episodes');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -22,7 +22,6 @@ export default function FeaturedEpisodes() {
         setEpisodes(data);
       } catch (error) {
         console.error("Failed to fetch episodes:", error);
-        // Handle the error (e.g., display an error message to the user)
       }
     };
     fetchEpisodes();
@@ -33,12 +32,12 @@ export default function FeaturedEpisodes() {
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12">Featured Episodes</h2>
         <div className="grid md:grid-cols-3 gap-8">
-          {episodes.map((episode) => (
-            <Card 
-              key={episode.id} 
-              className="overflow-hidden hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer"
+          {episodes.slice(0, 3).map((episode) => (
+              <MagicCard
+                key={episode.id}
               onClick={() => router.push(`/episodes/${episode.id}`)}
-            >
+                className="overflow-hidden hover:shadow-lg transition-all transform hover:scale-105 cursor-pointer"
+             >
               <img
                 src={episode.thumbnail}
                 alt={episode.title}
@@ -54,7 +53,7 @@ export default function FeaturedEpisodes() {
                   </Button>
                 </div>
               </div>
-            </Card>
+           </MagicCard>
           ))}
         </div>
         <div className="text-center mt-12">
