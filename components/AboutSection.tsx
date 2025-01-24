@@ -4,6 +4,7 @@ import { Youtube, Linkedin, Instagram, Music2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import profile from "@/assets/profile.jpg";
 import TiltedCard from "./magicui/TitledCard";
+import { TypingAnimation } from "./magicui/typing-animation";
 
 const CustomSpotifyIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="30" viewBox="0 0 32 32">
@@ -13,36 +14,39 @@ const CustomSpotifyIcon = () => (
 
 export default function AboutSection() {
     const socialLinks = {
-      youtube: "https://www.youtube.com/@learnings-of-lifeofanyrold1562",
+        youtube: "https://www.youtube.com/@learnings-of-lifeofanyrold1562",
         spotify: "https://open.spotify.com/show/2OJxCOaKWoiRH3RJZmKyYT",
         linkedin: "https://www.linkedin.com/in/saniya-mazumder-b2a960229/",
-      instagram: "https://www.instagram.com/saniyamplifies/",
-      amazonMusic: "https://music.amazon.in/podcasts/bb63930f-3f00-4c2f-818b-12f88959472d/learnings-of-life-of-an-18-yr-old?ref=dm_sh_ZzQ7m34mGfR9x3vX21jQ7725n"
-  };
+        instagram: "https://www.instagram.com/saniyamplifies/",
+        amazonMusic: "https://music.amazon.in/podcasts/bb63930f-3f00-4c2f-818b-12f88959472d/learnings-of-life-of-an-18-yr-old?ref=dm_sh_ZzQ7m34mGfR9x3vX21jQ7725n"
+    };
 
     return (
-        <section id="about" className="py-20 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white -z-10" />
+        <section id="about" className="py-20 relative overflow-hidden" style={{ backgroundColor: '#f0f0f5' }}>
+            <div className="absolute inset-0 -z-10" />
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                     <div className="relative md:pr-8 flex justify-center">
-                         <TiltedCard
+                        <TiltedCard
                             imageSrc={profile.src}
-                              altText="Saniya Mazumder"
-                             containerHeight="400px"
-                              containerWidth="400px"
-                               imageHeight="400px"
-                                imageWidth="400px"
-                               rotateAmplitude={8}
+                            altText="Saniya Mazumder"
+                            containerHeight="400px"
+                            containerWidth="400px"
+                            imageHeight="400px"
+                            imageWidth="400px"
+                            rotateAmplitude={8}
                             scaleOnHover={1.05}
-                             showTooltip={false}
+                            showTooltip={false}
                             displayOverlayContent={false}
-                             />
+                        />
                     </div>
                     <div>
-                        <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            About Saniya
-                        </h2>
+                        <TypingAnimation
+                            className="mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                            children="About Saniya"
+                            duration={100}  // Speed of the typing
+                            delay={500}     // Delay before typing starts
+                        />
                         <p className="text-lg text-gray-700 mb-6 leading-relaxed">
                             Welcome to Learnings of life of an 18 yr old, a podcast created by an eighteen year old Indian girl who has been through many such situations in her life that has helped fill her bag of experience with tons of learnings and life lessons that she very kindly decided to share with the world for she wants them to know that they are not alone.
                         </p>
@@ -55,13 +59,13 @@ export default function AboutSection() {
                                 { icon: Music2, link: socialLinks.amazonMusic }
                             ].map((social, index) => (
                                 <Button
-                                  key={index}
+                                    key={index}
                                     variant="ghost"
                                     size="icon"
-                                   className="hover:bg-purple-100 hover:text-purple-600 transform hover:scale-110 transition-all"
+                                    className="hover:bg-purple-100 hover:text-purple-600 transform hover:scale-110 transition-all"
                                     onClick={() => window.open(social.link, '_blank')}
                                 >
-                                  <social.icon className="h-6 w-6" />
+                                    <social.icon className="h-6 w-6" />
                                 </Button>
                             ))}
                         </div>
