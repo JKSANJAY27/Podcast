@@ -6,27 +6,24 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { Episode } from "@/types/episode";
 import { MagicCard } from "@/components/magicui/magic-card";
+import axios from 'axios';
 
 export default function FeaturedEpisodes() {
   const router = useRouter();
   const [episodes, setEpisodes] = useState<Episode[]>([]);
-
-  const [isLoading, setIsLoading] = useState(true);
+ const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
-        setIsLoading(true);
-        const response = await fetch('/api/episodes');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEpisodes(data);
-      } catch (error) {
+          setIsLoading(true);
+        const response = await axios.get('/api/episodes');
+          setEpisodes(response.data);
+      } catch (error:any) {
         console.error("Failed to fetch episodes:", error);
-        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+          setError(error.message)
       } finally {
         setIsLoading(false);
       }

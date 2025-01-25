@@ -6,6 +6,7 @@ import type { Episode } from "@/types/episode";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import Image from "next/image";
+import axios from 'axios';
 import { CloseIcon } from "@/components/magicui/CloseIcon";
 
 interface Props {
@@ -24,15 +25,11 @@ export default function EpisodesPage() {
     useEffect(() => {
         const fetchEpisodes = async () => {
             try {
-                const response = await fetch('/api/episodes');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setEpisodes(data);
-            } catch (error) {
-                console.error("Failed to fetch episodes:", error);
-            }
+                const response = await axios.get('/api/episodes');
+                 setEpisodes(response.data);
+             } catch (error) {
+                 console.error("Failed to fetch episodes:", error);
+             }
         };
         fetchEpisodes();
     }, []);
@@ -112,9 +109,9 @@ export default function EpisodesPage() {
                             <motion.div
                                 layoutId={`card-${active.title}-${id}`}
                                 ref={ref}
-                                className="w-full max-w-[95%] md:max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
+                                className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
                             >
-                                <motion.div layoutId={`image-${active.title}-${id}`}>
+                                <motion.div layoutId={`image-${active.title}-${id}`} className="p-2">
                                     <Image
                                         priority
                                         width={200}
@@ -135,8 +132,8 @@ export default function EpisodesPage() {
                                                 {active.title}
                                             </motion.h3>
                                             <p className="text-neutral-600 dark:text-neutral-400">
-                                              {active.description}
-                                          </p>
+                                                {active.description}
+                                            </p>
                                         </div>
 
                                         <motion.a
@@ -164,38 +161,35 @@ export default function EpisodesPage() {
                         </div>
                     ) : null}
                 </AnimatePresence>
-               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <ul className="max-w-2xl mx-auto w-full gap-4">
                     {filteredEpisodes.map((episode, index) => (
                         <motion.div
                             layoutId={`card-${episode.title}-${id}`}
                             key={`card-${episode.title}-${id}`}
                             onClick={() => setActive(episode)}
-                            className="p-4 flex flex-col justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border border-gray-300 mb-4"
+                            className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border border-gray-300 mb-4"
                         >
-                           <motion.div layoutId={`image-${episode.title}-${id}`}>
+                             <motion.div layoutId={`image-${episode.title}-${id}`} className="p-2">
                                   <Image
                                       width={100}
                                       height={100}
                                       src={episode.thumbnail}
                                       alt={episode.title}
-                                       className="h-40 w-full  rounded-lg object-cover object-top"
+                                      className="h-40 w-full  rounded-lg object-cover object-top"
                                       />
                                 </motion.div>
-                                <div className="w-full">
+                                 <div className="w-full">
                                     <motion.h3
                                         layoutId={`title-${episode.title}-${id}`}
                                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
                                     >
                                         {episode.title}
                                     </motion.h3>
-                                    <motion.p
-                                        layoutId={`description-${episode.description}-${id}`}
-                                        className="text-neutral-600 dark:text-neutral-400 text-center md:text-left"
-                                    >
-                                        {episode.description}
-                                    </motion.p>
-                                </div>
-
+                                    <p className="text-neutral-600 dark:text-neutral-400 text-center md:text-left">
+                                          {episode.description}
+                                       </p>
+                                   </div>
+                            
                          <motion.button
                                 layoutId={`button-${episode.title}-${id}`}
                                 className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-4 md:mt-0"
@@ -204,7 +198,7 @@ export default function EpisodesPage() {
                          </motion.button>
                         </motion.div>
                     ))}
-                 </div>
+                </ul>
             </div>
         </div>
     );
