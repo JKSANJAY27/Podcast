@@ -27,7 +27,7 @@ export default function Footer() {
         url = 'https://www.instagram.com/learnings_oflife_of_an_18yrold?igsh=NWY5OGMxNzc3eXg3';
         break;
       case 'music':
-        url = 'https://music.amazon.in/';
+        url = 'https://music.amazon.in/podcasts/7f850437-f3a1-441c-8026-cba9fe1d15a4/learnings-of-life-of-an-18yr-old';
         break;
       default:
         return;

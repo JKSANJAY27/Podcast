@@ -30,7 +30,7 @@ export default function AboutSection() {
   };
 
   const handleAmazonMusicClick = () => {
-    window.open("https://music.amazon.in/", "_blank");
+    window.open("https://music.amazon.in/podcasts/7f850437-f3a1-441c-8026-cba9fe1d15a4/learnings-of-life-of-an-18yr-old", "_blank");
   };
 
   return (
