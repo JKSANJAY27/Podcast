@@ -22,8 +22,8 @@ export default function FeaturedEpisodes() {
         const response = await axios.get('/api/episodes');
           setEpisodes(response.data);
       } catch (error:any) {
-        console.error("Failed to fetch episodes:", error);
           setError(error.message)
+          return {error: error.message};
       } finally {
         setIsLoading(false);
       }

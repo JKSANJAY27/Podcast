@@ -27,8 +27,8 @@ export default function EpisodesPage() {
             try {
                 const response = await axios.get('/api/episodes');
                  setEpisodes(response.data);
-             } catch (error) {
-                 console.error("Failed to fetch episodes:", error);
+             } catch (error: any) {
+                 return {error: error.message};
              }
         };
         fetchEpisodes();
