@@ -4,8 +4,8 @@ import type { Episode } from '@/types/episode';
 
 const youtube = google.youtube('v3');
 
-const YOUTUBE_API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
-const CHANNEL_ID = process.env.NEXT_PUBLIC_YOUTUBE_CHANNEL_ID;
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
 async function getYouTubeVideos(maxResults = 50): Promise<Episode[]> {
     if (!YOUTUBE_API_KEY || !CHANNEL_ID) {

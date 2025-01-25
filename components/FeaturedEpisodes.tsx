@@ -11,9 +11,13 @@ export default function FeaturedEpisodes() {
   const router = useRouter();
   const [episodes, setEpisodes] = useState<Episode[]>([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchEpisodes = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('/api/episodes');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -22,6 +26,9 @@ export default function FeaturedEpisodes() {
         setEpisodes(data);
       } catch (error) {
         console.error("Failed to fetch episodes:", error);
+        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchEpisodes();
