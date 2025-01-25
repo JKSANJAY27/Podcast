@@ -14,7 +14,7 @@ interface Props {
     };
 }
 
- function EpisodesPage() {
+export default function EpisodesPage() {
     const [episodes, setEpisodes] = useState<Episode[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [active, setActive] = useState<Episode | null>(null);
@@ -61,8 +61,6 @@ interface Props {
         episode.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-
-
     return (
         <div className="min-h-screen bg-gray-50 py-20">
             <div className="max-w-7xl mx-auto px-4">
@@ -84,7 +82,7 @@ interface Props {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/20 h-full w-full z-10"
+                            className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-10"
                         />
                     )}
                 </AnimatePresence>
@@ -114,7 +112,7 @@ interface Props {
                             <motion.div
                                 layoutId={`card-${active.title}-${id}`}
                                 ref={ref}
-                                className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]  flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
+                                className="w-full max-w-[95%] md:max-w-[500px] h-full md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-neutral-900 sm:rounded-3xl overflow-hidden"
                             >
                                 <motion.div layoutId={`image-${active.title}-${id}`}>
                                     <Image
@@ -123,7 +121,7 @@ interface Props {
                                         height={200}
                                         src={active.thumbnail}
                                         alt={active.title}
-                                        className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
+                                        className="w-full h-48 md:h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top"
                                     />
                                 </motion.div>
 
@@ -136,12 +134,9 @@ interface Props {
                                             >
                                                 {active.title}
                                             </motion.h3>
-                                            <motion.p
-                                                layoutId={`description-${active.description}-${id}`}
-                                                className="text-neutral-600 dark:text-neutral-400"
-                                            >
-                                                {active.description}
-                                            </motion.p>
+                                            <p className="text-neutral-600 dark:text-neutral-400">
+                                              {active.description}
+                                          </p>
                                         </div>
 
                                         <motion.a
@@ -169,25 +164,24 @@ interface Props {
                         </div>
                     ) : null}
                 </AnimatePresence>
-                <ul className="max-w-2xl mx-auto w-full gap-4">
+               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredEpisodes.map((episode, index) => (
                         <motion.div
                             layoutId={`card-${episode.title}-${id}`}
                             key={`card-${episode.title}-${id}`}
                             onClick={() => setActive(episode)}
-                            className="p-4 flex flex-col md:flex-row justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border border-gray-300 mb-4"
+                            className="p-4 flex flex-col justify-between items-center hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer border border-gray-300 mb-4"
                         >
-                            <div className="flex gap-4 flex-col md:flex-row ">
-                                <motion.div layoutId={`image-${episode.title}-${id}`}>
-                                    <Image
-                                        width={100}
-                                        height={100}
-                                        src={episode.thumbnail}
-                                        alt={episode.title}
-                                        className="h-40 w-40 md:h-14 md:w-14 rounded-lg object-cover object-top"
-                                    />
+                           <motion.div layoutId={`image-${episode.title}-${id}`}>
+                                  <Image
+                                      width={100}
+                                      height={100}
+                                      src={episode.thumbnail}
+                                      alt={episode.title}
+                                       className="h-40 w-full  rounded-lg object-cover object-top"
+                                      />
                                 </motion.div>
-                                <div className="">
+                                <div className="w-full">
                                     <motion.h3
                                         layoutId={`title-${episode.title}-${id}`}
                                         className="font-medium text-neutral-800 dark:text-neutral-200 text-center md:text-left"
@@ -201,19 +195,17 @@ interface Props {
                                         {episode.description}
                                     </motion.p>
                                 </div>
-                            </div>
-                            <motion.button
+
+                         <motion.button
                                 layoutId={`button-${episode.title}-${id}`}
                                 className="px-4 py-2 text-sm rounded-full font-bold bg-gray-100 hover:bg-green-500 hover:text-white text-black mt-4 md:mt-0"
                             >
                                 Play
-                            </motion.button>
+                         </motion.button>
                         </motion.div>
                     ))}
-                </ul>
+                 </div>
             </div>
         </div>
     );
 }
-
-export default EpisodesPage;
