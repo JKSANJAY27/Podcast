@@ -14,7 +14,7 @@ const CustomSpotifyIcon = () => (
 
 export default function AboutSection() {
   const handleYoutubeClick = () => {
-    window.open("hhttps://www.youtube.com/@Learningsoflifeofan18yrold", "_blank");
+    window.open("https://www.youtube.com/@Learningsoflifeofan18yrold", "_blank");
   };
 
   const handleSpotifyClick = () => {
