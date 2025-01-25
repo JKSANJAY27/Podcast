@@ -8,6 +8,8 @@ const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const CHANNEL_ID = process.env.YOUTUBE_CHANNEL_ID;
 
 async function getYouTubeVideos(maxResults = 50): Promise<Episode[]> {
+    console.log('YouTube API Key:', YOUTUBE_API_KEY ? 'Present' : 'Missing');
+    console.log('Channel ID:', CHANNEL_ID);
     if (!YOUTUBE_API_KEY || !CHANNEL_ID) {
         console.error("Missing YouTube API key or Channel ID");
         return [];
@@ -19,7 +21,10 @@ async function getYouTubeVideos(maxResults = 50): Promise<Episode[]> {
             part: ['snippet'],
             order: 'date',
             maxResults,
+            type: ['video']
         });
+
+        console.log('YouTube API Response:', JSON.stringify(response.data, null, 2));
 
         if (!response.data.items) {
             return [];
@@ -31,33 +36,38 @@ async function getYouTubeVideos(maxResults = 50): Promise<Episode[]> {
                     return null;
                 }
 
-                const videoDetails = await youtube.videos.list({
-                    key: YOUTUBE_API_KEY,
-                    part: ['contentDetails'],
-                    id: [item.id.videoId],
-                });
+                try{
+                    const videoDetails = await youtube.videos.list({
+                        key: YOUTUBE_API_KEY,
+                        part: ['contentDetails'],
+                        id: [item.id.videoId],
+                    });
 
-                if (!videoDetails.data.items || videoDetails.data.items.length === 0 || !videoDetails.data.items[0].contentDetails?.duration) {
+                    if (!videoDetails.data.items || videoDetails.data.items.length === 0 || !videoDetails.data.items[0].contentDetails?.duration) {
+                        return null;
+                    }
+
+                    const duration = videoDetails.data.items[0].contentDetails.duration;
+
+                    return {
+                        id: item.id.videoId,
+                        title: item.snippet?.title || 'No Title',
+                        description: item.snippet?.description || 'No Description',
+                        thumbnail: item.snippet?.thumbnails?.high?.url || '',
+                        publishedAt: item.snippet?.publishedAt || '',
+                        duration: formatDuration(duration),
+                    } as Episode;
+                } catch (error) {
+                    console.error('Error fetching YouTube video:', error);
                     return null;
                 }
-
-                const duration = videoDetails.data.items[0].contentDetails.duration;
-
-                return {
-                    id: item.id.videoId,
-                    title: item.snippet?.title || 'No Title',
-                    description: item.snippet?.description || 'No Description',
-                    thumbnail: item.snippet?.thumbnails?.high?.url || '',
-                    publishedAt: item.snippet?.publishedAt || '',
-                    duration: formatDuration(duration),
-                } as Episode;
             })
         );
 
         return videos.filter(Boolean) as Episode[]; // Filter out nulls
 
     } catch (error) {
-        console.error('Error fetching YouTube videos:', error);
+        console.error('Complete error in getYouTubeVideos:', error);
         return [];
     }
 }
@@ -115,13 +125,19 @@ function formatDuration(duration: string): string {
 
 
 export async function GET(request: Request) {
-  try {
-    const episodes = await getYouTubeVideos(50);
-    return NextResponse.json(episodes);
-  } catch (error) {
-    console.error("Error in API route:", error);
-    return NextResponse.json({ error: "Failed to fetch episodes" }, { status: 500 });
-  }
+    console.log('API Route: GET /api/episodes called');
+    
+    try {
+        const episodes = await getYouTubeVideos(50);
+        console.log('Fetched Episodes:', episodes.length);
+        return NextResponse.json(episodes);
+    } catch (error) {
+        console.error("Comprehensive error in API route:", error);
+        return NextResponse.json({ 
+            error: "Failed to fetch episodes", 
+            details: error instanceof Error ? error.message : 'Unknown error' 
+        }, { status: 500 });
+    }
 }
 
 // Add a new handler for a specific video ID
