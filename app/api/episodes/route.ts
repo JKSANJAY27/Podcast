@@ -15,23 +15,23 @@ export async function GET(request: Request) {
 
 // Add a new handler for a specific video ID
 
-export async function POST(request: Request) {
-    try {
-        const { videoId } = await request.json();
+// export async function POST(request: Request) {
+//     try {
+//         const { videoId } = await request.json();
 
-        if (!videoId) {
-            return NextResponse.json({ error: "Video ID is required" }, { status: 400 });
-        }
+//         if (!videoId) {
+//             return NextResponse.json({ error: "Video ID is required" }, { status: 400 });
+//         }
 
-        const episode = await getYouTubeVideo(videoId);
+//         const episode = await getYouTubeVideo(videoId);
 
-        if (!episode) {
-            return NextResponse.json({ error: "Episode not found" }, { status: 404 });
-        }
+//         if (!episode) {
+//             return NextResponse.json({ error: "Episode not found" }, { status: 404 });
+//         }
 
-        return NextResponse.json(episode);
-    } catch (error) {
-        console.error("Error fetching single episode:", error);
-        return NextResponse.json({ error: "Failed to fetch episode" }, { status: 500 });
-    }
-}
+//         return NextResponse.json(episode);
+//     } catch (error) {
+//         console.error("Error fetching single episode:", error);
+//         return NextResponse.json({ error: "Failed to fetch episode" }, { status: 500 });
+//     }
+// }
